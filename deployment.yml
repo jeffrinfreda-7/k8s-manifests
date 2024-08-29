@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-application
+  labels:
+    app: products-application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: products-application
+  template:
+    metadata:
+      labels:
+        app: products-application
+    spec:
+      containers:
+        - name: products-application
+          image: product-application-pipeline:v1  # Updated with your Docker image tag
+          ports:
+            - containerPort: 8080
