@@ -1,4 +1,3 @@
----
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -12,17 +11,16 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: products-application
+      app.kubernetes.io/name: product-service
   replicas: 3
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: products-application
+        app.kubernetes.io/name: product-service
     spec:
       containers:
-        - image: 874616579683.dkr.ecr.us-east-1.amazonaws.com/product-service-app:v1
-          imagePullPolicy: Always
-          name: products-application-container
+        - name: product-service
+          image: 874616579683.dkr.ecr.us-east-1.amazonaws.com/product-service-app:v1
           ports:
             - containerPort: 8081
 ---
@@ -33,12 +31,12 @@ metadata:
   name: products-application-service
 spec:
   ports:
-    - port: 80
+    - port: 8081
       targetPort: 8081
       protocol: TCP
   type: NodePort
   selector:
-    app.kubernetes.io/name: products-application
+    app.kubernetes.io/name: product-service
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -59,4 +57,4 @@ spec:
               service:
                 name: products-application-service
                 port:
-                  number: 80
+                  number: 8081
